@@ -41,6 +41,8 @@
 
 // });
 
+// BLOG VLOT VLOT BLOG USING .request gives an error if a file path is used instead of html.
+
 var cheerio = require('cheerio');
 var http = require("http");
 var clc = require('cli-color');
