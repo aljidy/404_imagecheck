@@ -1,48 +1,3 @@
-// var possible_pages = [];
-// var http = require("http");
-
-// process.argv.forEach(function (val, index, array) {
-//   // console.log(index + ': ' + val);
-//   if((val.indexOf('//') != -1 || val.indexOf('.com') != -1)  ){
-//   	possible_pages.push(val);
-//   }
-// });
-
-// console.log(possible_pages);
-
-// possible_pages.forEach(function(val, index, array){
-
-
-// 	var options = {
-// 	  host: val,
-// 	  port: 80,
-// 	  // path: '/upload',
-// 	  method: 'GET'
-
-// 	};
-// 	 console.log(options);
-
-// 	var req = http.request(options, function(res) {
-	  
-// 	  res.setEncoding('utf8');
-// 	  res.on('data', function (chunk) {
-// 	    console.log('BODY: ' + chunk);
-// 	  });
-// 	});
-
-// 	req.on('error', function(e) {
-// 	  console.log('problem with request: ' + e.message);
-// 	});
-
-// 	// write data to request body
-// 	req.write('data\n');
-// 	req.write('data\n');
-// 	req.end();
-
-// });
-
-// BLOG VLOT VLOT BLOG USING .request gives an error if a file path is used instead of html.
-
 var cheerio = require('cheerio');
 var http = require("http");
 var clc = require('cli-color');
@@ -74,7 +29,6 @@ process.argv.forEach(function (val, index, array) {
 
 
 function check_404(full_html){
-
 	$ = cheerio.load(full_html);
 	
 	if($('title').text().indexOf('404')!= -1){
@@ -96,8 +50,7 @@ function check_404(full_html){
 
 
 function count_second(){
-	if(run_count > 0){
-		process.stdout.write(".");
+	if(run_count > 0){ process.stdout.write(".");
 	} else{
 		process.stdout.write(" . ");
 	}
@@ -115,13 +68,11 @@ function getSysTime(){
 
 
 function simpleHttpResquest(request_host, request_path, run_count){
-
 	var req = http.get(full_path, function(res) {
 		var html_response = "";
 		res.setEncoding('utf8');
 
 		res.on('data', function (chunk) {
-			// console.log(chunk);
 			html_response += chunk;
 		});
 
@@ -144,6 +95,5 @@ function simpleHttpResquest(request_host, request_path, run_count){
 
 	req.end();
 }
-
 
 simpleHttpResquest(image_host, image_path, run_count);
