@@ -43,12 +43,15 @@
 
 var cheerio = require('cheerio');
 var http = require("http");
+var clc = require('cli-color');
+
 var image_host;
 var image_path;
 var second_counter;
 var timeout_id;
 var full_path;
 var run_count = 0 ;
+var today;
 
 process.argv.forEach(function (val, index, array) {
   if((val.indexOf('//') != -1 || val.indexOf('.com') != -1)  ){
@@ -66,8 +69,6 @@ process.argv.forEach(function (val, index, array) {
   }
 });
 
-console.log(image_host);
-console.log(image_path);
 
 
 function check_404(full_html){
@@ -75,27 +76,61 @@ function check_404(full_html){
 	$ = cheerio.load(full_html);
 	
 	if($('title').text().indexOf('404')!= -1){
-		console.log(image_host.concat(image_path).concat(' is still 404'));
-		timeout_id = setTimeout(simpleHttpResquest, 10000, image_host, image_path);
+		run_count++;
+		getSysTime();
+		console.log('\n'.concat(today).concat(clc.yellow(' Status:404 ')).concat(image_host).concat(image_path));
+		timeout_id = setTimeout(simpleHttpResquest, 20000, image_host, image_path, run_count);
 		clearInterval(second_counter);
-		second_counter = setInterval(count_second, 2000);
+		second_counter = setInterval(count_second, 1000);
 	} else {
 		clearInterval(second_counter);
 		clearTimeout(timeout_id);
-		console.log(image_host.concat(image_path).concat(' not 404!'));
+		console.log('\n'.concat(today).concat(clc.green(' Status:200 OK ')).concat(image_host).concat(image_path));
+		console.log(clc.greenBright('Uploaded, terminating script.'));
 		return; 
 		
 	}
 }
+
+
 function count_second(){
-	console.log('.');
+	if(run_count > 0){
+		process.stdout.write(".");
+	} else{
+		process.stdout.write(" . ");
+	}
 }
 
-function simpleHttpResquest(request_host, request_path, request_port){
 
-	if(request_port === undefined){
-		request_port = 80;
-	}
+function getSysTime(){
+	today = new Date();
+	today = today.toLocaleString();
+	var first_slice = today.indexOf(':') - 2;
+	var last_slice = today.lastIndexOf(':') + 3;
+	today = today.slice(first_slice, last_slice);
+
+	// today = today.match('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$')[0];
+
+	// var hour = today.getHours();
+ //    hour = (hour < 10 ? "0" : "") + hour;
+
+ //    var min  = today.getMinutes();
+ //    min = (min < 10 ? "0" : "") + min;
+
+ //    var sec  = today.getSeconds();
+ //    sec = (sec < 10 ? "0" : "") + sec;
+
+
+    return today;
+}	
+
+
+function simpleHttpResquest(request_host, request_path, run_count){
+
+// function simpleHttpResquest(request_host, request_path, request_port){
+	// if(request_port === undefined){
+	// 	request_port = 80;
+	// }
 
 	// var options = {
 	//   host: request_host,
@@ -115,7 +150,9 @@ function simpleHttpResquest(request_host, request_path, request_port){
 		});
 
 		res.on('end', function(){
-			console.log('FINAL'+html_response);
+			if(run_count === 0){
+				console.log(clc.magenta(html_response));
+			}
 			check_404(html_response);
 		});
 	  
@@ -136,4 +173,4 @@ function simpleHttpResquest(request_host, request_path, request_port){
 }
 
 
-simpleHttpResquest(image_host,image_path);
+simpleHttpResquest(image_host, image_path, run_count);
