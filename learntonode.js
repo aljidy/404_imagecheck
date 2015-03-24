@@ -110,37 +110,11 @@ function getSysTime(){
 	var first_slice = today.indexOf(':') - 2;
 	var last_slice = today.lastIndexOf(':') + 3;
 	today = today.slice(first_slice, last_slice);
-
-	// today = today.match('^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$')[0];
-
-	// var hour = today.getHours();
- //    hour = (hour < 10 ? "0" : "") + hour;
-
- //    var min  = today.getMinutes();
- //    min = (min < 10 ? "0" : "") + min;
-
- //    var sec  = today.getSeconds();
- //    sec = (sec < 10 ? "0" : "") + sec;
-
-
     return today;
 }	
 
 
 function simpleHttpResquest(request_host, request_path, run_count){
-
-// function simpleHttpResquest(request_host, request_path, request_port){
-	// if(request_port === undefined){
-	// 	request_port = 80;
-	// }
-
-	// var options = {
-	//   host: request_host,
-	//   port: request_port,
-	//   path: request_path,
-	//   method: 'GET'
-
-	// };
 
 	var req = http.get(full_path, function(res) {
 		var html_response = "";
@@ -159,9 +133,6 @@ function simpleHttpResquest(request_host, request_path, run_count){
 		});
 	  
 	});
-
-	
-	
 
 	req.on('error', function(e) {
 	  console.log('problem with request: ' + e.message);
