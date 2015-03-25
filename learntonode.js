@@ -6,8 +6,11 @@ var image_host;
 var image_path;
 var second_counter;
 var timeout_id;
+var timeout_id_image;
 var full_path;
 var run_count = 0 ;
+var original_image;
+var content_type;
 var today;
 
 process.argv.forEach(function (val, index, array) {
@@ -44,7 +47,23 @@ function check_404(full_html){
 		console.log('\n'.concat(today).concat(clc.green(' Status:200 OK ')).concat(image_host).concat(image_path));
 		console.log(clc.greenBright('Uploaded, terminating script.'));
 		return; 
-		
+	}
+}
+
+function checkModifiedImage(original_image, current_image){
+	if(current_image == original_image){
+		run_count++;
+		getSysTime();
+		console.log('\n'.concat(today).concat(clc.yellow(' Status:Not updated')).concat(image_host).concat(image_path));
+		timeout_id_image = setTimeout(simpleHttpResquest, 20000, image_host, image_path, run_count);
+		clearInterval(second_counter);
+		second_counter = setInterval(count_second, 1000);
+	} else {
+		clearInterval(second_counter);
+		clearTimeout(timeout_id_image);
+		console.log('\n'.concat(today).concat(clc.green(' Status:Updated')).concat(image_host).concat(image_path));
+		console.log(clc.greenBright('Uploaded, terminating script.'));
+		return; 
 	}
 }
 
@@ -72,6 +91,7 @@ function simpleHttpResquest(request_host, request_path, run_count){
 		var html_response = "";
 		res.setEncoding('utf8');
 
+
 		res.on('data', function (chunk) {
 			html_response += chunk;
 		});
@@ -80,7 +100,14 @@ function simpleHttpResquest(request_host, request_path, run_count){
 			if(run_count === 0){
 				console.log(clc.magenta(html_response));
 			}
-			check_404(html_response);
+
+			// if(image){
+			// 	checkModifiedImage(a,b);
+			// } else{
+			// 	check_404(html_response);	
+			// }
+			
+			check_404(html_response);	
 		});
 	  
 	});
