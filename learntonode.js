@@ -1,6 +1,8 @@
 var cheerio = require('cheerio');
 var http = require("http");
 var clc = require('cli-color');
+var notifier = require('node-notifier');
+
 
 var image_host;
 var image_path;
@@ -45,6 +47,10 @@ function check_404(full_html){
 		clearInterval(second_counter);
 		clearTimeout(timeout_id);
 		console.log('\n'.concat(today).concat(clc.green(' Status:200 OK ')).concat(image_host).concat(image_path));
+		notifier.notify({
+			'title': 'Image Uploaded!',
+  			'message': (image_host).concat(image_path).concat(' has been uploaded.')
+		});
 		console.log(clc.greenBright('Uploaded, terminating script.'));
 		return; 
 	}
