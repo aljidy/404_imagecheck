@@ -16,10 +16,19 @@ var content_type;
 var today;
 
 process.argv.forEach(function (val, index, array) {
+	
   if((val.indexOf('//') != -1 || val.indexOf('.com') != -1)  ){
   	
   	start_slice = val.indexOf('.com/')  + 4 ;
 
+  	if(val.indexOf('https') > -1){
+  		val = val.replace('https','http');
+  	}
+
+  	if(val.indexOf('http') === -1){
+  		val = 'http://'.concat(val);
+  	}
+  	
   	if(val.indexOf('.com/') === -1){
   		image_host = val;
   	} else{
@@ -43,6 +52,9 @@ function check_404(full_html){
 		timeout_id = setTimeout(simpleHttpResquest, 20000, image_host, image_path, run_count);
 		clearInterval(second_counter);
 		second_counter = setInterval(count_second, 1000);
+	} else if($('title').text().indexOf('400')!= -1){
+		console.log('\n'.concat(today).concat(clc.red(' Status:400')).concat(' - something is wrong with the url/argument provided'));
+		console.log(clc.redBright('Terminating script.'));
 	} else {
 		clearInterval(second_counter);
 		clearTimeout(timeout_id);
@@ -54,6 +66,8 @@ function check_404(full_html){
 		console.log(clc.greenBright('Uploaded, terminating script.'));
 		return; 
 	}
+
+
 }
 
 function checkModifiedImage(original_image, current_image){
@@ -107,7 +121,7 @@ function simpleHttpResquest(request_host, request_path, run_count){
 				console.log(clc.magenta(html_response));
 			}
 
-			// if(image){
+			// if(res["content-type"]){
 			// 	checkModifiedImage(a,b);
 			// } else{
 			// 	check_404(html_response);	

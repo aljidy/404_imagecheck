@@ -1,0 +1,26 @@
+{
+  "name": "image-checker",
+  "version": "0.3.0",
+  "description": "Checks a web address for 404 and if it is, waits till it's not and lets you know. Also checks if an image gets modified if its an image and not 404.",
+  "author": "Adam Al-Jidy <abaj500@york.ac.uk>",
+  "homepage": "https://github.com/aljidy/image-checker",
+  "main": "image-checker.js",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/aljidy/image-checker"
+},
+  "bugs": {
+  "url": "https://github.com/aljidy/image-checker/issues"
+},
+  "keywords": [
+  "image-checker",
+  "404"  
+],
+  "dependencies": {
+    "cli-color": "0.3.3",
+    "node-notifier": "4.1.2",
+    "cheerio": "0.19.0"
+  },
+  "license": "MIT"
+}
+  
