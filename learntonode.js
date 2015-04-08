@@ -16,9 +16,7 @@ var content_type;
 var today;
 
 process.argv.forEach(function (val, index, array) {
-	
   if((val.indexOf('//') != -1 || val.indexOf('.com') != -1)  ){
-  	
   	start_slice = val.indexOf('.com/')  + 4 ;
 
   	if(val.indexOf('https') > -1){
@@ -36,15 +34,12 @@ process.argv.forEach(function (val, index, array) {
 		image_path = val.slice(start_slice);
   		image_host = val.replace(image_path, '');
   	}
-
   }
 });
 
 
-
 function check_404(full_html){
 	$ = cheerio.load(full_html);
-	
 	if($('title').text().indexOf('404')!= -1){
 		run_count++;
 		getSysTime();
@@ -66,8 +61,6 @@ function check_404(full_html){
 		console.log(clc.greenBright('Uploaded, terminating script.'));
 		return; 
 	}
-
-
 }
 
 function checkModifiedImage(original_image, current_image){
@@ -87,14 +80,12 @@ function checkModifiedImage(original_image, current_image){
 	}
 }
 
-
 function count_second(){
 	if(run_count > 0){ process.stdout.write(".");
 	} else{
 		process.stdout.write(" . ");
 	}
 }
-
 
 function getSysTime(){
 	today = new Date();
@@ -104,7 +95,6 @@ function getSysTime(){
 	today = today.slice(first_slice, last_slice);
     return today;
 }	
-
 
 function simpleHttpResquest(request_host, request_path, run_count){
 	var req = http.get(full_path, function(res) {
