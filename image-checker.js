@@ -12,6 +12,7 @@ var timeout_id_image;
 var full_path;
 var run_count = 0 ;
 var original_image;
+var current_image;
 var content_type;
 var today;
 
@@ -64,6 +65,9 @@ function check_404(full_html){
 }
 
 function checkModifiedImage(original_image, current_image){
+	if (typeof newer_image === 'undefinted'){
+		newer_image = original_image;
+	}
 	if(current_image == original_image){
 		run_count++;
 		getSysTime();
@@ -102,6 +106,7 @@ function simpleHttpResquest(request_host, request_path, run_count){
 		res.setEncoding('utf8');
 
 
+
 		res.on('data', function (chunk) {
 			html_response += chunk;
 		});
@@ -111,13 +116,20 @@ function simpleHttpResquest(request_host, request_path, run_count){
 				console.log(clc.magenta(html_response));
 			}
 
-			// if(res["content-type"]){
-			// 	checkModifiedImage(a,b);
-			// } else{
-			// 	check_404(html_response);	
-			// }
-			
-			check_404(html_response);	
+			var result_headers = JSON.stringify(res.headers);
+			var result_content_type = res.headers["content-type"];
+
+			console.log(clc.blue());
+
+			if(result_content_type.indexOf('image') > -1){
+				if (run_count === 0){
+					original_image = html_response;
+				}
+
+				checkModifiedImage(original_image,current_image);
+			} else{
+				check_404(html_response);	
+			}
 		});
 	  
 	});
