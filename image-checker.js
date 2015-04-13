@@ -18,8 +18,34 @@ var today;
 var result_status_code;
 var result_content_type;
 
+function count_second(){
+	if(run_count > 0){
+		process.stdout.write(".");
+	} else{
+		process.stdout.write(" . ");
+	}
+}
+
+function getSysTime(){
+	today = new Date();
+	today = today.toLocaleString();
+	var first_slice = today.indexOf(':') - 2;
+	var last_slice = today.lastIndexOf(':') + 3;
+	today = today.slice(first_slice, last_slice);
+    return today;
+}	
+
+function end_notification(title, message){
+	notifier.notify({
+			'title': title.toString(),
+  			'message': (image_host).concat(image_path).concat(message)
+		});
+		console.log(clc.greenBright('Uploaded, terminating script.'));
+}
+
+
 process.argv.forEach(function (val, index, array) {
-	 if((val.indexOf('//') != -1 || val.indexOf('.com') != -1)  ){
+	 if((val.indexOf('//') !== -1 || val.indexOf('.com') !== -1)  ){
   	start_slice = val.indexOf('.com/')  + 4 ;
 
   	if(val.indexOf('https') > -1){
@@ -30,7 +56,7 @@ process.argv.forEach(function (val, index, array) {
   		val = 'http://'.concat(val);
   	}
 
-  	if( val[('.com'.lenth + val.indexOf('.com') + 1 )] != '/'){		
+  	if( val[('.com'.lenth + val.indexOf('.com') + 1 )] !== '/'){		
   		val = val.concat('/');
   	}
   	
@@ -73,6 +99,8 @@ function simpleHttpResquest(request_host, request_path, run_count, type_check){
 					original_image = html_response;
 				}
 
+				console.log(result_content_type.indexOf('image'));
+
 				checkModifiedImage(original_image,current_image);
 			} else{
 				check404(html_response);	
@@ -93,9 +121,10 @@ function simpleHttpResquest(request_host, request_path, run_count, type_check){
 }
 
 function check404(full_html){
-	if(run_count === 0 && result_status_code != 404){
+	if(run_count === 0 && result_status_code !== 404){
 		getSysTime();
-		if ((result_status_code === 200) && (result_content_type.indexOf('html') == -1)){
+		
+		if ((result_status_code === 200) && (result_content_type.indexOf('html') === -1)){
 			console.log('\n'.concat(today).concat(clc.green(' Status:200 OK ').concat("Okay but isnt a page (could be a directory)")));
 			console.log(clc.redBright('Terminating script.'));
 			return;
@@ -120,11 +149,7 @@ function check404(full_html){
 			clearInterval(second_counter);
 			clearTimeout(timeout_id);
 			console.log('\n'.concat(today).concat(clc.green(' Status:200 OK ')).concat(full_path));
-			notifier.notify({
-				'title': 'Image Uploaded!',
-	  			'message': (full_path).concat(' has been uploaded.')
-			}	);
-			console.log(clc.greenBright('Uploaded, terminating script.'));
+			end_notification('Image Uploaded!', ' has been uploaded.');
 			return; 
 		}
 	}
@@ -132,8 +157,9 @@ function check404(full_html){
 
 function checkModifiedImage(original_image, current_image){
 	getSysTime();
-	if (typeof newer_image === 'undefinted'){
-		newer_image = original_image;
+	console.log('running');
+	if (typeof current_image === 'undefinted'){
+		current_image = original_image;
 	}
 
 	if(current_image == original_image){
@@ -152,31 +178,11 @@ function checkModifiedImage(original_image, current_image){
 		clearInterval(second_counter);
 		clearTimeout(timeout_id_image);
 		console.log('\n'.concat(today).concat(clc.green(' Status:Updated ')).concat(image_host).concat(image_path));
-		notifier.notify({
-			'title': 'Image Updated!',
-  			'message': (image_host).concat(image_path).concat(' has been updated.')
-		});
-		console.log(clc.greenBright('Updated, terminating script.'));
+		end_notification('Image Updated!', ' has been updated.');
 		return; 
 	}
 }
 
-function count_second(){
-	if(run_count > 0){
-		process.stdout.write(".");
-	} else{
-		process.stdout.write(" . ");
-	}
-}
-
-function getSysTime(){
-	today = new Date();
-	today = today.toLocaleString();
-	var first_slice = today.indexOf(':') - 2;
-	var last_slice = today.lastIndexOf(':') + 3;
-	today = today.slice(first_slice, last_slice);
-    return today;
-}	
 
 
 simpleHttpResquest(image_host, image_path, run_count);
