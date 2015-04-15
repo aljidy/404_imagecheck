@@ -1,4 +1,4 @@
-var cheerio = require('cheerio');
+// var cheerio = require('cheerio');
 var http = require("http");
 var clc = require('cli-color');
 var notifier = require('node-notifier');
@@ -13,7 +13,6 @@ var full_path;
 var run_count = 0 ;
 var original_image;
 var current_image;
-var content_type;
 var today;
 var result_status_code;
 var result_content_type;
@@ -46,7 +45,7 @@ function end_notification(title, message){
 
 process.argv.forEach(function (val, index, array) {
 	 if((val.indexOf('//') !== -1 || val.indexOf('.com') !== -1)  ){
-  	start_slice = val.indexOf('.com/')  + 4 ;
+  	var start_slice = val.indexOf('.com/')  + 4 ;
 
   	if(val.indexOf('https') > -1){
   		val = val.replace('https','http');
@@ -80,7 +79,7 @@ function simpleHttpResquest(request_host, request_path, run_count, type_check){
 		});
 
 		res.on('end', function(){
-			var result_headers = JSON.stringify(res.headers);
+			// var result_headers = JSON.stringify(res.headers);
 			result_content_type = res.headers["content-type"];
 			result_status_code = res.statusCode;
 
