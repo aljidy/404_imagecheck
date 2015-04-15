@@ -93,7 +93,8 @@ function simpleHttpResquest(request_host, request_path, run_count, type_check){
 
 			
 			
-			if(result_content_type.indexOf('image') > -1 && run_count === 0){
+			if(result_content_type.indexOf('image') > -1){
+			// if(result_content_type.indexOf('image') > -1 && run_count === 0){
 				if (run_count === 0){
 					original_image = html_response;
 				}
@@ -157,14 +158,13 @@ function check404(full_html){
 function checkModifiedImage(original_image, current_image){
 	getSysTime();
 	console.log('running');
-	if (typeof current_image === 'undefinted'){
+	if (typeof current_image === 'undefined'){
 		current_image = original_image;
 	}
 
 	if(current_image == original_image){
-		run_count++;
 		getSysTime();
-		console.log('\n'.concat(today).concat(clc.yellow('Status:Not updated')).concat(image_host).concat(image_path));
+		console.log('\n'.concat(today).concat(clc.yellow(' Status:Not updated ')).concat(image_host).concat(image_path));
 		timeout_id_image = setTimeout(simpleHttpResquest, 20000, image_host, image_path, run_count, 'check-update');
 		clearInterval(second_counter);
 		second_counter = setInterval(count_second, 1000);
@@ -180,6 +180,8 @@ function checkModifiedImage(original_image, current_image){
 		end_notification('Image Updated!', ' has been updated.');
 		return; 
 	}
+
+	run_count++;
 }
 
 
