@@ -80,7 +80,10 @@ function simpleHttpResquest(request_host, request_path, run_count, type_check){
 
 		res.on('end', function(){
 			// var result_headers = JSON.stringify(res.headers);
-			result_content_type = res.headers["content-type"];
+			if(run_count === 0){ //Only run once to ensure that it doesn't change checking function partway through
+				result_content_type = res.headers["content-type"];
+			}
+
 			result_status_code = res.statusCode;
 
 			if(run_count === 0){
@@ -157,7 +160,7 @@ function check404(full_html){
 
 function checkModifiedImage(original_image, current_image){
 	getSysTime();
-	console.log('running');
+	console.log(clc.blue('Image exsists.'));
 	if (typeof current_image === 'undefined'){
 		current_image = original_image;
 	}
