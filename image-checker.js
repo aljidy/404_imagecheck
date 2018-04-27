@@ -1,21 +1,20 @@
-// var cheerio = require('cheerio');
-var http = require("http");
-var clc = require('cli-color');
-var notifier = require('node-notifier');
+const http = require("http");
+const clc = require('cli-color');
+const notifier = require('node-notifier');
 
 
-var image_host;
-var image_path;
-var second_counter;
-var timeout_id;
-var timeout_id_image;
-var full_path;
-var run_count = 0 ;
-var original_image;
-var current_image;
-var today;
-var result_status_code;
-var result_content_type;
+let image_host;
+let image_path;
+let second_counter;
+let timeout_id;
+let timeout_id_image;
+let full_path;
+let run_count = 0 ;
+let original_image;
+let current_image;
+let today;
+let result_status_code;
+let result_content_type;
 
 function count_second(){
 	if(run_count > 0){
@@ -28,8 +27,8 @@ function count_second(){
 function getSysTime(){
 	today = new Date();
 	today = today.toLocaleString();
-	var first_slice = today.indexOf(':') - 2;
-	var last_slice = today.lastIndexOf(':') + 3;
+	let first_slice = today.indexOf(':') - 2;
+	let last_slice = today.lastIndexOf(':') + 3;
 	today = today.slice(first_slice, last_slice);
     return today;
 }	
