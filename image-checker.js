@@ -48,11 +48,8 @@ function end_notification(title, message) {
 }
 
 
-
-
-
 function checkForTrailingSlashes(listOfArguments) {
-    for(argIndex in listOfArguments){
+    for (argIndex in listOfArguments) {
         arg = listOfArguments[argIndex];
         if (typeof arg === "string") {
             if (arg.indexOf('//') !== -1 || arg.indexOf('www') !== -1 || arg.indexOf('.com') !== -1) {
