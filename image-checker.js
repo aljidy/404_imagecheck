@@ -87,7 +87,7 @@ function processUrlArguments(urlArguments) {
 }
 
 
-function simpleHttpResquest(request_host, request_path, run_count) {
+function simpleHttpRequest(request_host, request_path, run_count) {
     let request = http.get(full_path, function (res) {
         let html_response = "";
         res.setEncoding("utf8");
@@ -162,7 +162,7 @@ function check404() {
             run_count++;
             getSysTime();
             console.log("\n".concat(today).concat(clc.yellow(" Status:404 ")).concat(full_path));
-            timeout_id = setTimeout(simpleHttpResquest, 20000, image_host, image_path, run_count, "check-404");
+            timeout_id = setTimeout(simpleHttpRequest, 20000, image_host, image_path, run_count, "check-404");
             clearInterval(second_counter);
             second_counter = setInterval(count_second, 1000);
         } else {
@@ -184,7 +184,7 @@ function checkModifiedImage(original_image, current_image) {
     if (current_image == original_image) {
         getSysTime();
         console.log("\n".concat(today).concat(clc.yellow(" Status:Not updated ")).concat(image_host).concat(image_path));
-        timeout_id_image = setTimeout(simpleHttpResquest, 20000, image_host, image_path, run_count, "check-update");
+        timeout_id_image = setTimeout(simpleHttpRequest, 20000, image_host, image_path, run_count, "check-update");
         clearInterval(second_counter);
         second_counter = setInterval(count_second, 1000);
     } else {
@@ -233,7 +233,7 @@ function startUserExec() {
         processUrlArguments(val);
     });
 
-    simpleHttpResquest(image_host, image_path, run_count);
+    simpleHttpRequest(image_host, image_path, run_count);
 }
 
 main();
