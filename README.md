@@ -9,8 +9,15 @@
 node image-checker.js "http://www.sourcecertain.com/img/Example.png" -f
 ```
 
-Wrap URLs in "" like this
-`-f` for when using trialing slashes
+Wrap URLs in "" like the above
+`-f` for when using trailing slashes
+
+
+##TODO
+- Currently only uses the last url specified (check how `processUrlArguments() work)
+- Image updating checking doesn't work (possibly use image hashing)
+- pass function to httpRequest rather than having logic tied to it
+
 
 ## Help
 
